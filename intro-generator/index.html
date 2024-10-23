@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	  <title>NixCon 2023 intro generator</title>
+	  <link rel="preload" href="https://2023.nixcon.org/fonts/Behrensschrift-SH.otf" as="font" type="font/otf" crossorigin>
+	  <style>
+	    body { background-color: black; }
+	    @font-face {
+		font-family: 'Behrensschirft';
+		src: url('https://2023.nixcon.org/fonts/Behrensschrift-SH.otf');
+	    }
+	    p { font-family: 'Behrensschrift'; }
+	  </style>
+	</head>
+
+	<body>
+	  <p>Test</p>
+		<canvas id="canvas" height="1080" width="1920"></canvas>
+		<video autoplay controls download id="video"></video>
+
+		<script type="application/javascript" src="code.js"></script>
+		<script type="application/javascript">
+		  var fontReadyP = (new FontFace('Behrensschrift', 'url(https://2023.nixcon.org/fonts/Behrensschrift-SH.otf)').load().then((f) => {
+		      console.log('font loaded');
+		      document.fonts.add(f);
+		  }));
+		  const width = 1920, height = 1080;
+		  var animation = new Animation("template.svg");
+		  var outroAnimation = new OutroAnimation("template.svg", "by.svg");
+		  var introAnimation = new IntroAnimation3D("intro.png", "Why nix doesn't work", "Some Important Speaker");
+		  var animator = new Animator(document.getElementById('canvas'), document.getElementById('video'), width, height, introAnimation);
+
+		  var init = false;
+		  
+		  document.onreadystatechange = () => {
+		    if (init) return;
+		      init =true;
+		      fontReadyP.then(() => {
+		    animator.run().then(() => {
+			console.log('Done recording');
+		    });
+		      });
+		  }
+		</script>
+	</body>
+</html>
