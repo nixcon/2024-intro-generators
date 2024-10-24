@@ -5,10 +5,10 @@
 	  <link rel="preload" href="https://2023.nixcon.org/fonts/Behrensschrift-SH.otf" as="font" type="font/otf" crossorigin>
 	  <style>
 	    body { background-color: black; }
-	    //@font-face {
-	    //	font-family: 'Hack';
-	    //	src: url('fonts/hack-regular.woff2');
-	    //}
+	    @font-face {
+	    	font-family: 'Hack';
+	    	src: url('fonts/hack-regular.woff2');
+	    }
 
 	    @font-face {
 		font-family: 'oxanium';
@@ -52,10 +52,10 @@
 		  }));
 
 		  socket.on("talk", (talk_id) => {
-		  console.log("Received message:", talk_id);
-		  const talk = talks[talk_id];
-		      const animation = new IntroAnimation("logo.svg", talk.title,  "" + talk.persons.map((p) => p.public_name));
-			var animator = new Animator(document.getElementById('canvas'), null, width, height, animation);
+		    console.log("Received message:", talk_id);
+		    const talk = talks[talk_id];
+		    const animation = new IntroAnimation("logo.svg", talk.title,  "" + talk.persons.map((p) => p.public_name));
+		    var animator = new Animator(document.getElementById('canvas'), null, width, height, animation);
 
 			animator.run().then(() => {
         		    button.disabled = false;
