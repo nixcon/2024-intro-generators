@@ -23,15 +23,6 @@
 	</head>
 
 	<body>
-	  <button id="button">Render</button>
-	  <select name="talks" id="talks">
-	  </select>
-	  <select name="what" id="what">
-	    <option value="intro">intro</option>
-	    <option value="outro">outro</option>
-	    <option value="pause">pause</option>
-	  </select>
-	  <br /><h1>Title</h1>
 		<canvas id="canvas" height="1080" width="1920"></canvas>
 		<video autoplay controls download id="video"></video>
 
@@ -64,7 +55,7 @@
 			});
 		  });
 
-		  
+
 		  var fontReadyP = (new FontFace('oxanium', 'url(https://2024.nixcon.org/fonts/oxanium-bold.woff2) format(woff2)').load().then((f) => {
 		      console.log('font loaded');
 		      document.fonts.add(f);
