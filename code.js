@@ -243,7 +243,7 @@ class IntroAnimation {
 		this.imagePath = imagePath;
 		this.title = title;
 		this.person = person;
-		this.duration = 7;
+		this.duration = 1;
 		this.maxFrames = FPS * this.duration;
 	}
 
@@ -298,7 +298,7 @@ class IntroAnimation {
 		if (elapsedTime >= this.duration * 0) {
 			ctx.fillStyle = 'black';
 			ctx.globalAlpha = 1;
-			const fontHeight = 100;
+			const fontHeight = 80;
 			ctx.font = `${fontHeight}px oxanium`;
 			ctx.textAlign  = 'center';
 
@@ -313,7 +313,7 @@ class IntroAnimation {
 				textYOffset += textLineSpacing;
 			}
 
-			ctx.font = '82px oxanium'
+			ctx.font = '65px oxanium'
 			var personY = textY + (4* textLineSpacing);
 			if (textY + textYOffset - personY < textLineSpacing) {
 				personY = textY + textYOffset + textLineSpacing * 2;
@@ -343,7 +343,7 @@ class PauseAnimation {
 	constructor(imagePath) {
 		this.image = new Image();
 		this.imagePath = imagePath;
-		this.introDuration = 5;
+		this.introDuration = 1;
 		this.durationPerSponsor = 7;
 		this.rawSponsors = SPONSORS;
 		this.sponsorImages = [];

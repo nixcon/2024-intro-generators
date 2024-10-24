@@ -2,23 +2,18 @@
 <html>
 	<head>
 	  <title>NixCon 2024 intro generator</title>
-	  <link rel="preload" href="https://2023.nixcon.org/fonts/Behrensschrift-SH.otf" as="font" type="font/otf" crossorigin>
+
 	  <style>
 	    body { background-color: black; }
 	    @font-face {
-	    	font-family: 'Hack';
-	    	src: url('fonts/hack-regular.woff2');
-	    }
-
-	    @font-face {
-		font-family: 'oxanium';
-		src: url('https://2024.nixcon.org/fonts/oxanium-bold.woff2') format(woff2);
+			font-family: 'oxanium';
+			src: url('fonts/Oxanium-Bold.woff2');
 	    }
 
 
 	    * { color: white; }
-	    p { font-family: oxanium, monospace; }
-	    h1 { font-family: oxanium, monospace; }
+	    p { font-family: "oxanium"; }
+	    h1 { font-family: "oxanium"; }
 	  </style>
 	</head>
 
@@ -49,17 +44,12 @@
 		    var animator = new Animator(document.getElementById('canvas'), null, width, height, animation);
 
 			animator.run().then(() => {
-        		    button.disabled = false;
 			    console.log('Done recording');
 			    animator = null;
 			});
 		  });
 
 
-		  var fontReadyP = (new FontFace('oxanium', 'url(https://2024.nixcon.org/fonts/oxanium-bold.woff2) format(woff2)').load().then((f) => {
-		      console.log('font loaded');
-		      document.fonts.add(f);
-		  }));
 		  const width = 1920, height = 1080;
 		  //var init = false;
 
