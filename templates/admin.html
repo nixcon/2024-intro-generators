@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	  <title>NixCon 2024 intro generator</title>
+	  <script type="application/javascript" src="socket.io.js"></script>
+          <script type="application/javascript" src="code.js"></script>
+        </head>
+	<body>
+	  <button id="button">Switch</button>
+	  <select name="talks" id="talks"></select>
+
+	  <script type="application/javascript">
+		const socket = io();
+		socket.on("connect", () => {
+		    console.log("connected");
+		});
+		socket.on("disconnect", () => {
+		    console.log("disconnected");
+		});
+
+		socket.on("server", (msg) => {
+		    console.log("Received message:", msg);
+		});
+		const talksList = document.getElementById('talks');
+		loadSchedule().then((talks) => talks.forEach((t) => {
+		    const ele = document.createElement('option');
+		    ele.talk = t;
+		    ele.value = t.id;
+		    ele.text = t.id + " - " + t.title;
+		    talksList.appendChild(ele);
+		}));
+	    const button = document.getElementById("button");
+	    button.onclick = () => {
+        	const talk = talksList.selectedOptions[0].talk;
+		console.log(talk);
+		socket.emit("talk", talk.id)
+	    };
+	  </script>
+        </body>
+</html>

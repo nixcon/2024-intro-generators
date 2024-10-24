@@ -24,18 +24,7 @@
       };
     in {
       devShells.default = pkgs.mkShell {
-        nativeBuildInputs = [ pkgs.nodejs ];
-      };
-      packages.default = pkgs.npmlock2nix.v2.build {
-        nodejs = pkgs.nodejs;
-        name = "nixcon-2023";
-        src = ./.;
-
-        preBuild = "export HOME=$(pwd)";
-        installPhase = ''
-          cp -rv dist $out
-          touch $out/.nojekyll
-        '';
+        nativeBuildInputs = [ pkgs.nodejs (pkgs.python3.withPackages (p: with p; [ flask flask-socketio requests ])) ];
       };
     });
 }

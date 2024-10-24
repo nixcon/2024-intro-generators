@@ -1,3 +1,6 @@
+[*.html]
+indent_type = space
+tab_width = 4
 [*.js]
 indent_type = space
 tab_width = 4

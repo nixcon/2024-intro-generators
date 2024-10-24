@@ -1,5 +1,5 @@
 const FPS = 60;
-const SCHEDULE_URL = "https://talks.nixcon.org/nixcon-2024/schedule/export/schedule.json";
+const SCHEDULE_URL = "/schedule.json";
 const SPONSORS = {};
 
 function splitLines(context, text, maxWidth, lineHeight) {
@@ -70,7 +70,7 @@ class Animator {
 			console.log('Total size', size);
 			this.chunks = [];
 			var url = URL.createObjectURL(blob);
-			this.video.src = url;
+			if (this.video) this.video.src = url;
 		};
 		this.recorder.ondataavailable = (e)  => {
 			console.log('recording data available', e.data.size, this.recorder.state)
