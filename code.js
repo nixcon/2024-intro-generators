@@ -243,7 +243,7 @@ class IntroAnimation {
 		this.imagePath = imagePath;
 		this.title = title;
 		this.person = person;
-		this.duration = 1;
+		this.duration = 5;
 		this.maxFrames = FPS * this.duration;
 	}
 
@@ -262,7 +262,7 @@ class IntroAnimation {
 		const fadeProgressPct = frameNumber / (FPS * 3.5);
 		const progressPct = frameNumber / this.maxFrames;
 		
-		ctx.fillStyle = 'white';
+		ctx.fillStyle = '#eee';
 		ctx.globalAlpha = 1;
 		ctx.fillRect(0, 0, width, height);
 
@@ -281,7 +281,7 @@ class IntroAnimation {
 		//ctx.globalCompositeOperation = "saturation";
 		////ctx.fillStyle = "hsl(100%, 100%, " + fadeProgressPct * 100 + "%)";
 		//ctx.fillStyle = "#000";
-		//ctx.fillRect(imageX, imageY, desiredWidth, scaledHeight);
+		//ctx.fillRect(imageX, imageY, desiredWidth, scaledHeight)
 
 		//ctx.globalAlpha = 1;
 		ctx.globalCompositeOperation = "hue";
@@ -296,6 +296,44 @@ class IntroAnimation {
 		
 
 		if (elapsedTime >= this.duration * 0) {
+			const minPct = 0.2;
+
+			ctx.fillStyle = 'black';
+			if (elapsedTime < this.duration * 0.9) {
+				ctx.globalAlpha = 1;
+			} else {
+				ctx.globalAlpha = 1.0 - easeInOutSine(frameNumber, this.maxFrames * 0.8);
+			}
+			ctx.font = `40px oxanium`;
+			ctx.textAlign  = 'left';
+
+			const promptText = "[nixcon@berlin:~]$ nix-build ./talk.nix";
+			//const chars = new Array("⣾","⣽","⣻","⢿","⡿","⣟","⣯","⣷");
+			const chars = "◴◷◶◵";
+			const messages = new Array(
+				"querying info about '/nix/store/06yf8w0hpaszqybfx64gdl381id8a0l1-foo' on 'https://cache.nixos.org'...",
+				"downloading 'https://cache.nixos.org/06yf8w0hpaszqybfx64gdl381id8a0l1.narinfo'...",
+				"this derivation will be built: \n  /nix/store/paqfyvmcqf1ikq8q0c9x04di5x26a1pb-foo.drv",
+				"building '/nix/store/paqfyvmcqf1ikq8q0c9x04di5x26a1pb-foo.drv'...",
+				"Running phase: unpackPhase",
+				"Running phase: patchPhase",
+				"Running phase: updateAutotoolsGnuConfigScriptsPhase",
+				"Running phase: configurePhase",
+				"Running phase: buildPhase",
+				"Running phase: installPhase",
+			);
+			if (progressPct < minPct) {
+				var t = promptText;
+				const e = frameNumber / (minPct * this.maxFrames);
+				ctx.fillText(t, centerX, height*0.15);
+				for (var i = 0; i < messages.length * e; i++) {
+					t = messages[i];
+					ctx.fillStyle = '#555';
+					ctx.fillText(t, centerX, height*0.15 + 45 + 45 * i);
+				}
+			} else {
+//				ctx.fillText(promptText, centerX, height*0.15);	
+			}
 			ctx.fillStyle = 'black';
 			ctx.globalAlpha = 1;
 			const fontHeight = 80;
@@ -306,28 +344,43 @@ class IntroAnimation {
 			const textLineSpacing =  + 100;
 			const textX = centerX + this.image.width;
 			const textY = height * 0.25;
-			const lines = splitLines(ctx, this.title, width - this.image.width - 10, 100);
-			var textYOffset = 0;
-			for (var line of lines) {
-				ctx.fillText(line, textX, textY + textYOffset);
-				textYOffset += textLineSpacing;
-			}
+			var title = this.title;
 
-			ctx.font = '65px oxanium'
-			var personY = textY + (4* textLineSpacing);
-			if (textY + textYOffset - personY < textLineSpacing) {
-				personY = textY + textYOffset + textLineSpacing * 2;
-			}
-
-			const people = this.person.split(',');
-			if (people.length > 1) {
-				var offset = 0;
-				for (let person of people) {
-					ctx.fillText(person, textX, personY + offset);
-					offset +=  textLineSpacing;
+			if (progressPct > minPct) {
+				const typingDuration = this.duration * (1-minPct);
+				const typingProgressPct =  (-(minPct * this.duration) + elapsedTime) / typingDuration;
+				const typingTimeElapsed = typingProgressPct * typingDuration;
+				var timePerCharacter = typingDuration / this.title.length;
+				if (timePerCharacter > 0.125) {
+					timePerCharacter = 0.125;
 				}
-			} else {
-				ctx.fillText(this.person.replace(',', ', '), textX, personY);
+				const textLengthScaled = this.title.length * ( typingTimeElapsed / timePerCharacter );
+				//console.log(textLengthScaled / this.title.length);
+				//const textLengthScaled = this.title.length * typingProgressPct;
+				const title = this.title.substring(0, textLengthScaled);
+				const lines = splitLines(ctx, title, width - this.image.width - 10, 100);
+				var textYOffset = 0;
+				for (var line of lines) {
+					ctx.fillText(line, textX, textY + textYOffset);
+					textYOffset += textLineSpacing;
+				}
+
+				ctx.font = '65px oxanium'
+				var personY = textY + (4* textLineSpacing);
+				if (textY + textYOffset - personY < textLineSpacing) {
+					personY = textY + textYOffset + textLineSpacing * 2;
+				}
+
+				const people = this.person.split(',');
+				if (people.length > 1) {
+					var offset = 0;
+					for (let person of people) {
+						ctx.fillText(person, textX, personY + offset);
+						offset +=  textLineSpacing;
+					}
+				} else {
+					ctx.fillText(this.person.replace(',', ', '), textX, personY);
+				}
 			}
 		}
 	}
